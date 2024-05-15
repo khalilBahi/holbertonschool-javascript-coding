@@ -10,14 +10,14 @@ request.get(url, (error, response, body) => {
   } else {
     const data = JSON.parse(body);
     const completedTasks = {};
-    for (const datas of data){
-        if (datas.completed){
-            if (completedTasks[datas.userId]){
-                completedTasks[datas.userId]++; 
-            }else {
-                completedTasks[datas.userId] = 1;
-            }
+    for (const datas of data) {
+      if (datas.completed) {
+        if (completedTasks[datas.userId]) {
+          completedTasks[datas.userId]++;
+        } else {
+          completedTasks[datas.userId] = 1;
         }
+      }
     }
     console.log(completedTasks);
   }
