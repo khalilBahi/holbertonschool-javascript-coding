@@ -14,7 +14,6 @@ request.get(url, (error, response, body) => {
     const results = data.results;
     for (const result of results) {
       const characters = result.characters;
-      console.log (characters)
       for (const character of characters) {
         // count characters whose URL includes '18'
         if (character.includes('18')) {
