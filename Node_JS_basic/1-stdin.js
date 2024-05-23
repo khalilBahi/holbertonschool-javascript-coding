@@ -1,14 +1,16 @@
-console.log('Welcome to Holberton School, what is your name?');
-process.stdin.on('data', (data) => {
-  // Get the user's input and remove any trailing newline or carriage return characters
-  const name = data.toString().trim();
+process.stdout.write('Welcome to Holberton School, what is your name?\n');
 
-  console.log(`Your name is: ${name}`);
-  process.exit();
+process.stdin.resume();
+
+process.stdin.on('readable', () => {
+  const name = process.stdin.read();
+
+  if (name) {
+    process.stdout.write(`Your name is: ${name}`);
+  }
 });
 
 // Ensure the process ends when the user sends an interrupt signal (Ctrl+C)
-process.on('SIGINT', () => {
-  console.log('\nThis important software is now closing');
-  process.exit();
+process.stdin.on('end', () => {
+  process.stdout.write('This important software is now closing\n');
 });
