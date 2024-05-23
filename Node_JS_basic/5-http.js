@@ -1,5 +1,6 @@
 const http = require('http');
 const fs = require('fs').promises;
+const url = require('url');
 
 const countStudents = async (path) => {
   try {
@@ -30,20 +31,26 @@ const countStudents = async (path) => {
 };
 
 // Create the HTTP server
-const app = http.createServer(async (req, res) => {
-  if (req.url === '/') {
-    res.statusCode = 200;
-    res.end('Hello Holberton School!\n');
+const app = http.createServer((req, res) => {
+  res.writeHead(200, { 'Content-Type': 'text/html' });
+  const cur = url.parse(req.url, true).path;
+  if (cur === '/') {
+    res.write('Hello Holberton School!');
+    res.end();
   }
-
-  if (req.url === '/students') {
-    res.statusCode = 200;
-    const dbPath = process.argv[2];
-    const studentsInfo = await countStudents(dbPath);
-    res.end(`This is the list of our students\n${studentsInfo}`);
+  if (cur === '/students') {
+    res.write('This is the list of our students\n');
+    countStudents(process.argv[2], res)
+      .then((data) => {
+        res.write(data);
+        res.end();
+      })
+      .catch((error) => {
+        res.write(error.message);
+        res.end();
+      });
   }
 });
-
 app.listen(1245);
 
 module.exports = app;
