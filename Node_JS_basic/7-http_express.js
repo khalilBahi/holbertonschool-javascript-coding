@@ -1,6 +1,5 @@
-const http = require('http');
+const express = require('express');
 const fs = require('fs').promises;
-const url = require('url');
 
 const countStudents = async (path) => {
   try {
